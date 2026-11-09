@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ex5lab"
+version = "1.0.0"
+description = "Research toolkit and incomplete base toward EX5-to-MQ5 recovery (no working opcode decoder)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "LicenseRef-Research-NoWarranty" }
+authors = [{ name = "ex5lab contributors" }]
+dependencies = []
+
+[project.optional-dependencies]
+research = [
+  "numpy>=2.0,<3",
+  "scipy>=1.11,<2",
+  "construct>=2.10,<3",
+  "pydivsufsort>=0.0.20",
+  "py-tlsh>=4.5",
+]
+
+[project.scripts]
+ex5lab = "ex5lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

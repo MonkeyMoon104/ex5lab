@@ -1,0 +1,46 @@
+# Weekly Dependabot PR review (read-only). Never executes PR code / never merges.
+# Schedule: Monday 08:00 UTC ≈ 09:00 CET / 10:00 CEST (Europe/Rome).
+name: dependabot-review
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: dependabot-review-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    name: Review Dependabot PRs (read-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Review Dependabot PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Ensure gh targets this repository
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          echo "## Dependabot PR review (read-only)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Schedule note: Monday 08:00 UTC ≈ 09:00 CET / 10:00 CEST (Europe/Rome)." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "This job never merges, approves, or executes PR head code." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          python scripts/review_dependabot_prs.py --repo "$GITHUB_REPOSITORY" --all --markdown \
+            | tee -a "$GITHUB_STEP_SUMMARY"

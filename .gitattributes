@@ -1,0 +1,29 @@
+# Line endings / text
+* text=auto
+*.py   text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.mq5  text eol=lf
+*.mqh  text eol=lf
+# Phase 13 release-build identity: preserve exact CRLF bytes / SHA-256
+corpus/phase13/sources/p13_debug_ea.mq5 -text
+*.sh   text eol=lf
+*.ps1  text eol=crlf
+
+# Binaries (normally untracked)
+*.ex5  binary -diff
+*.ex4  binary -diff
+*.zip  binary -diff
+*.bin  binary -diff
+
+# git archive / release tarballs must not ship proprietary trees
+input/** export-ignore
+prove/** export-ignore
+output/** export-ignore
+reports/** export-ignore
+EX5_DECOMPILER_SOURCE.zip export-ignore
+EX5_DECOMPILER_SOURCE.manifest.json export-ignore
+.venv/** export-ignore
